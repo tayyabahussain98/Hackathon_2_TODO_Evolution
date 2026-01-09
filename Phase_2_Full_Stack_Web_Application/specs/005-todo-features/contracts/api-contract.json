@@ -1,0 +1,152 @@
+# API Contract: Enhanced Todo Features
+
+## Overview
+API contract for enhanced todo functionality including priorities, tags, search, filter, sort, due dates, and recurring tasks.
+
+## Updated Models
+
+### Todo Response Model
+```json
+{
+  "id": 1,
+  "description": "Complete project documentation",
+  "completed": false,
+  "user_id": 123,
+  "priority": "HIGH",
+  "tags": ["work", "documentation"],
+  "due_date": "2024-12-31T23:59:59Z",
+  "recurrence_type": "NONE",
+  "reminder_time": 10,
+  "created_at": "2024-12-01T10:00:00Z",
+  "updated_at": "2024-12-01T10:00:00Z"
+}
+```
+
+### Todo Create Request Model
+```json
+{
+  "description": "Complete project documentation",
+  "priority": "HIGH",
+  "tags": ["work", "documentation"],
+  "due_date": "2024-12-31T23:59:59Z",
+  "recurrence_type": "NONE",
+  "reminder_time": 10
+}
+```
+
+### Todo Update Request Model
+```json
+{
+  "description": "Updated task description",
+  "completed": false,
+  "priority": "MEDIUM",
+  "tags": ["work", "updated", "documentation"],
+  "due_date": "2025-01-15T18:00:00Z",
+  "recurrence_type": "WEEKLY",
+  "reminder_time": 15
+}
+```
+
+## API Endpoints
+
+### Create Todo (Enhanced)
+- **Method**: POST
+- **Path**: `/api/todos`
+- **Auth**: JWT Bearer token required
+- **Request Body**:
+  ```json
+  {
+    "description": "Task description",
+    "priority": "HIGH",
+    "tags": ["work", "important"],
+    "due_date": "2024-12-31T23:59:59Z",
+    "recurrence_type": "NONE",
+    "reminder_time": 10
+  }
+  ```
+- **Response**: 201 Created with Todo Response Model
+- **Errors**: 400 Bad Request, 401 Unauthorized, 500 Server Error
+
+### Get Todos (Enhanced with Query Parameters)
+- **Method**: GET
+- **Path**: `/api/todos`
+- **Auth**: JWT Bearer token required
+- **Query Parameters**:
+  - `search` (string): Keyword to search in description
+  - `status` (string): "completed" or "incomplete"
+  - `priority` (string): "HIGH", "MEDIUM", or "LOW"
+  - `tags` (string): Comma-separated list of tags to filter by
+  - `sort_by` (string): "priority", "due_date", "created_at", "description"
+  - `order` (string): "asc" or "desc"
+  - `limit` (integer): Number of results to return
+  - `offset` (integer): Number of results to skip
+- **Response**: 200 OK with array of Todo Response Models
+- **Errors**: 401 Unauthorized, 500 Server Error
+
+### Get Todo by ID
+- **Method**: GET
+- **Path**: `/api/todos/{id}`
+- **Auth**: JWT Bearer token required
+- **Response**: 200 OK with Todo Response Model
+- **Errors**: 401 Unauthorized, 404 Not Found, 500 Server Error
+
+### Update Todo (Enhanced)
+- **Method**: PATCH
+- **Path**: `/api/todos/{id}`
+- **Auth**: JWT Bearer token required
+- **Request Body** (all fields optional):
+  ```json
+  {
+    "description": "Updated task description",
+    "completed": true,
+    "priority": "MEDIUM",
+    "tags": ["work", "completed"],
+    "due_date": "2024-12-31T23:59:59Z",
+    "recurrence_type": "DAILY",
+    "reminder_time": 5
+  }
+  ```
+- **Response**: 200 OK with Todo Response Model
+- **Errors**: 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Server Error
+
+### Delete Todo
+- **Method**: DELETE
+- **Path**: `/api/todos/{id}`
+- **Auth**: JWT Bearer token required
+- **Response**: 204 No Content
+- **Errors**: 401 Unauthorized, 404 Not Found, 500 Server Error
+
+## Query Parameter Examples
+
+### Search and Filter
+- `GET /api/todos?search=meeting` - Find todos containing "meeting"
+- `GET /api/todos?status=incomplete&priority=HIGH` - Incomplete high-priority tasks
+- `GET /api/todos?tags=work,urgent` - Tasks with either "work" or "urgent" tag
+- `GET /api/todos?due_date_before=2025-01-01` - Tasks due before specified date
+
+### Sorting
+- `GET /api/todos?sort_by=priority&order=desc` - Sort by priority, highest first
+- `GET /api/todos?sort_by=due_date&order=asc` - Sort by due date, earliest first
+- `GET /api/todos?sort_by=created_at&order=desc` - Sort by creation date, newest first
+
+## Error Responses
+
+### Standard Error Format
+```json
+{
+  "detail": "Error message describing what went wrong"
+}
+```
+
+### Validation Error Format
+```json
+{
+  "detail": [
+    {
+      "loc": ["body", "priority"],
+      "msg": "Priority must be one of: HIGH, MEDIUM, LOW",
+      "type": "value_error"
+    }
+  ]
+}
+```

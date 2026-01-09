@@ -1,0 +1,351 @@
+openapi: 3.0.3
+info:
+  title: Todo API
+  description: RESTful API for managing todo items with basic CRUD operations
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+tags:
+  - name: todos
+    description: Todo item operations
+  - name: health
+    description: Health check and monitoring
+
+paths:
+  /api/todos:
+    post:
+      tags:
+        - todos
+      summary: Create a new todo
+      description: Creates a new todo item with auto-generated ID and timestamps
+      operationId: createTodo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoCreate'
+            examples:
+              simple:
+                value:
+                  description: "Buy groceries"
+              detailed:
+                value:
+                  description: "Complete project documentation by end of week"
+      responses:
+        '201':
+          description: Todo created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoResponse'
+              example:
+                id: 1
+                description: "Buy groceries"
+                completed: false
+                created_at: "2025-12-28T10:00:00.123456"
+                updated_at: "2025-12-28T10:00:00.123456"
+        '400':
+          description: Invalid input (empty description, too long, invalid JSON)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                empty_description:
+                  value:
+                    detail: "description must not be empty"
+                too_long:
+                  value:
+                    detail: "description must not exceed 500 characters"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - todos
+      summary: List all todos
+      description: Retrieves all todo items
+      operationId: listTodos
+      responses:
+        '200':
+          description: List of all todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoResponse'
+              examples:
+                empty_list:
+                  value: []
+                multiple_todos:
+                  value:
+                    - id: 1
+                      description: "Buy groceries"
+                      completed: false
+                      created_at: "2025-12-28T10:00:00.123456"
+                      updated_at: "2025-12-28T10:00:00.123456"
+                    - id: 2
+                      description: "Write documentation"
+                      completed: true
+                      created_at: "2025-12-28T11:00:00.789012"
+                      updated_at: "2025-12-28T11:30:00.456789"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/todos/{id}:
+    get:
+      tags:
+        - todos
+      summary: Get a specific todo
+      description: Retrieves a single todo by its ID
+      operationId: getTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Todo ID
+          schema:
+            type: integer
+            minimum: 1
+          example: 5
+      responses:
+        '200':
+          description: Todo found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoResponse'
+              example:
+                id: 5
+                description: "Review pull requests"
+                completed: false
+                created_at: "2025-12-28T12:00:00.123456"
+                updated_at: "2025-12-28T12:00:00.123456"
+        '404':
+          description: Todo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Todo 999 not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - todos
+      summary: Update a todo
+      description: Updates todo description and/or completion status (partial update)
+      operationId: updateTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Todo ID
+          schema:
+            type: integer
+            minimum: 1
+          example: 3
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoUpdate'
+            examples:
+              mark_complete:
+                value:
+                  completed: true
+              update_description:
+                value:
+                  description: "Updated task description"
+              update_both:
+                value:
+                  description: "Completely updated task"
+                  completed: true
+      responses:
+        '200':
+          description: Todo updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoResponse'
+              example:
+                id: 3
+                description: "Updated task description"
+                completed: true
+                created_at: "2025-12-28T10:00:00.123456"
+                updated_at: "2025-12-28T13:00:00.789012"
+        '400':
+          description: Invalid input (empty description, validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "description must not be empty"
+        '404':
+          description: Todo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Todo 999 not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - todos
+      summary: Delete a todo
+      description: Permanently removes a todo item
+      operationId: deleteTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Todo ID
+          schema:
+            type: integer
+            minimum: 1
+          example: 10
+      responses:
+        '204':
+          description: Todo deleted successfully (no content)
+        '404':
+          description: Todo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Todo 999 not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health:
+    get:
+      tags:
+        - health
+      summary: Health check
+      description: Returns server health status for monitoring
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+              example:
+                status: "healthy"
+        '500':
+          description: Server is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    TodoCreate:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Task description (1-500 characters)
+          example: "Buy groceries"
+
+    TodoUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: Updated task description (optional)
+          example: "Buy groceries and milk"
+        completed:
+          type: boolean
+          description: Completion status (optional)
+          example: true
+      description: At least one field must be provided for update
+
+    TodoResponse:
+      type: object
+      required:
+        - id
+        - description
+        - completed
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          description: Unique todo identifier (auto-generated)
+          example: 1
+        description:
+          type: string
+          description: Task description
+          example: "Buy groceries"
+        completed:
+          type: boolean
+          description: Whether the task is completed
+          example: false
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp (UTC, ISO 8601)
+          example: "2025-12-28T10:00:00.123456"
+        updated_at:
+          type: string
+          format: date-time
+          description: Last modification timestamp (UTC, ISO 8601)
+          example: "2025-12-28T10:00:00.123456"
+
+    Error:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: Human-readable error message
+          example: "Todo 999 not found"
