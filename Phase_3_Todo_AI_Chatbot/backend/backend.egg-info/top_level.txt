@@ -1,8 +1,0 @@
-alembic
-core
-mcp
-middleware
-migrations
-models
-routes
-services
