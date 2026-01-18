@@ -1,0 +1,119 @@
+# Dependencies
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+env/
+venv/
+ENV/
+.venv/
+
+# Build outputs
+dist/
+build/
+target/
+
+# Testing
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nyc_output/
+
+# Logs
+*.log
+*.log.*
+
+# Environment variables
+.env*
+!.env.example
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Icon?
+.apdisk
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+.coveragerc
+.tox/
+tox.ini
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/modules/
+*.tmproj
+*.sublime-project
+*.sublime-workspace
+.pydevproject
+
+# FastAPI / Backend
+*.db
+*.db-journal
+instance/
+.webassets-cache
+celerybeat-schedule
+celerybeat.pid
+
+# Database
+*.sqlite
+*.sqlite3
+.dynamodb/
+
+# Local development
+.dockerenv
+.devcontainer/
+
+# Secrets and sensitive data
+secrets/
+secret.json
+config/secrets.json
+*.key
+*.pem
+*.crt
+*.cert
+*.der
+*.p12
+*.pfx
+*.p7b
+*.p7c
+*.p7r
+*.srl
+
+# Documentation
+docs/_build/
+_site/
+
+# Coverage
+coverage.xml
+*.gcov
+*.lcov
+.info
+
+# Alembic migration backups
+alembic/versions/*.bak
+
+# FastAPI specific
+*.db-shm
+*.db-wal
