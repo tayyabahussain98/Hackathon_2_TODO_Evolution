@@ -26,10 +26,10 @@ export default function LoginPage() {
   const router = useRouter();
   const isAuthenticated = !!session;
 
-  // Redirect to chatbot if already authenticated
+  // Redirect to dashboard if already authenticated
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      router.push('/chatbot');
+      router.push('/');
     }
   }, [isAuthenticated, loading, router]);
 
@@ -51,9 +51,9 @@ export default function LoginPage() {
         description: 'You have been successfully logged in.',
       });
 
-      // Redirect to chatbot page after a brief delay to ensure auth state is updated
+      // Redirect to dashboard page after a brief delay to ensure auth state is updated
       setTimeout(() => {
-        router.push('/chatbot');
+        router.push('/');
       }, 300);
     } catch (err: any) {
       const message = err.message || 'Something went wrong. Please check your credentials.';

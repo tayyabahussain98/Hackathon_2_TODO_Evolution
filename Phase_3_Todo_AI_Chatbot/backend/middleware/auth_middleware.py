@@ -5,14 +5,18 @@ Provides FastAPI dependency for extracting and validating JWT tokens.
 Used to protect API endpoints requiring authentication.
 """
 
+import random
+
 from fastapi import Depends, Header, HTTPException
 from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from datetime import datetime
 
 from core.database import get_db
 from core.config import settings
 from models.user import User
+from models.session_token import SessionToken
 
 
 async def get_current_user(
@@ -75,11 +79,36 @@ async def get_current_user(
     except ValueError:
         raise HTTPException(status_code=401, detail="Invalid user ID in token")
 
-    # Query user from database
-    result = await db.execute(select(User).where(User.id == user_id))
+    # Periodically clean up expired session tokens (approximately 1 in 100 requests)
+    if random.randint(1, 100) == 1:
+        from services.jwt_service import cleanup_expired_sessions
+        try:
+            await cleanup_expired_sessions(db)
+        except Exception:
+            # If cleanup fails, continue with authentication as it's non-critical
+            pass
+
+    # First check if the session token exists and is valid
+    session_result = await db.execute(
+        select(SessionToken).where(
+            SessionToken.token == token,
+            SessionToken.expires_at > datetime.utcnow()
+        )
+    )
+    session_token = session_result.scalar_one_or_none()
+
+    if session_token is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired session token")
+
+    # Query user from database using the user_id from the session token
+    # This ensures consistency between the token and the user
+    result = await db.execute(select(User).where(User.id == session_token.user_id))
     user = result.scalar_one_or_none()
 
     if user is None:
+        # If session token exists but user doesn't, clean up the orphaned session token
+        db.delete(session_token)
+        await db.commit()
         raise HTTPException(status_code=401, detail="User not found")
 
     return user

@@ -124,3 +124,24 @@ async def delete_session_token(token: str, db: AsyncSession) -> None:
         delete(SessionToken).where(SessionToken.token == token)
     )
     await db.commit()
+
+
+async def cleanup_expired_sessions(db: AsyncSession) -> int:
+    """
+    Clean up expired session tokens from the database
+
+    Args:
+        db: Async database session
+
+    Returns:
+        Number of expired tokens deleted
+    """
+    from datetime import datetime
+    from sqlalchemy import delete
+
+    result = await db.execute(
+        delete(SessionToken).where(SessionToken.expires_at < datetime.utcnow())
+    )
+    await db.commit()
+
+    return result.rowcount

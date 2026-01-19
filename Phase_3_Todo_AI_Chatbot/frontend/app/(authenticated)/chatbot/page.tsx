@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Send, Bot, User } from 'lucide-react';
 
 export default function ChatbotPage() {
-  const { token, user, session } = useAuth();
+  const { token, user, session, loading } = useAuth(); // Add loading to destructuring
   const isLoggedIn = !!session; // Calculate isLoggedIn from session
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -21,6 +21,44 @@ export default function ChatbotPage() {
   const [conversationId, setConversationId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Check auth status and redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !isLoggedIn) {
+      // User is not authenticated, redirect to login
+      router.push('/login');
+    }
+  }, [isLoggedIn, loading, router]);
+
+  // If still loading, show loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+          <p className="text-lg">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, show redirecting message
+  if (!isLoggedIn) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+          <p className="text-lg">Redirecting to login...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Add debug logging for token
+  useEffect(() => {
+    console.log("Chatbot Page - Token:", token);
+    console.log("Chatbot Page - IsLoggedIn:", isLoggedIn);
+    console.log("Chatbot Page - Session:", session);
+  }, [token, isLoggedIn, session]);
 
   // Add welcome message on first load
   useEffect(() => {
@@ -61,6 +99,9 @@ export default function ChatbotPage() {
     setIsLoading(true);
 
     try {
+      // Add debug logging before API call
+      console.log("Sending token:", token);
+
       // Send message to backend
       const response = await sendChatMessage({
         message: inputValue,

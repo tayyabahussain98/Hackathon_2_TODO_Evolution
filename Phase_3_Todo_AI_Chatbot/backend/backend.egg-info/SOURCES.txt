@@ -6,6 +6,7 @@ alembic/versions/20251230_002_add_users_and_session_tokens.py
 alembic/versions/20251230_003_add_user_id_to_todos.py
 alembic/versions/20260105_004_add_priority_tags_due_date_recurrence.py
 alembic/versions/20260106_005_add_tags_index.py
+alembic/versions/20260116_006_add_conversations_and_messages_tables.py
 backend.egg-info/PKG-INFO
 backend.egg-info/SOURCES.txt
 backend.egg-info/dependency_links.txt
@@ -19,7 +20,6 @@ mcp/__init__.py
 mcp/tools.py
 middleware/__init__.py
 middleware/auth_middleware.py
-migrations/versions/001_add_conversations_and_messages_tables.py
 models/__init__.py
 models/auth.py
 models/chat.py

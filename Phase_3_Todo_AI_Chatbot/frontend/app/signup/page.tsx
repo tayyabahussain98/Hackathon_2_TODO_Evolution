@@ -35,10 +35,10 @@ export default function SignupPage() {
   const router = useRouter();
   const isAuthenticated = !!session;
 
-  // Redirect to chatbot if already authenticated
+  // Redirect to dashboard if already authenticated
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      router.push("/chatbot");
+      router.push("/");
     }
   }, [isAuthenticated, loading, router]);
 
@@ -69,8 +69,8 @@ export default function SignupPage() {
         description: "Welcome! Your account has been successfully created.",
       });
 
-      // Redirect to chatbot page
-      router.push("/chatbot");
+      // Redirect to dashboard page
+      router.push("/");
     } catch (err: any) {
       const message =
         err.message || "Failed to create account. Email might be in use.";
