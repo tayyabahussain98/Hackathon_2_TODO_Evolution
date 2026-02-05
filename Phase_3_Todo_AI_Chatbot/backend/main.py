@@ -11,16 +11,60 @@ Features:
 """
 
 import logging
+import signal
+import sys
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import todos, auth, chat
+import asyncio
 
-# Configure logging
+# Configure logging (console only, no file logging)
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.WARNING,  # Changed from INFO to WARNING to reduce noise
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler()  # Console only, no file handler
+    ]
 )
 logger = logging.getLogger(__name__)
+
+# Global flag for graceful shutdown
+_SHUTDOWN_SIGNAL = False
+
+def signal_handler(signum, frame):
+    global _SHUTDOWN_SIGNAL
+    logger.info(f"Received signal {signum}, initiating graceful shutdown...")
+    _SHUTDOWN_SIGNAL = True
+    sys.exit(0)
+
+# Register signal handlers for graceful shutdown
+signal.signal(signal.SIGTERM, signal_handler)
+signal.signal(signal.SIGINT, signal_handler)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan event handler with graceful shutdown"""
+    global _SHUTDOWN_SIGNAL
+    logger.warning("Todo API starting up with JWT authentication...")  # Changed to warning level
+    logger.warning("Server running on http://localhost:8000")
+    logger.warning("Interactive API docs available at http://localhost:8000/docs")
+    logger.warning("API endpoints available at /api")
+
+    yield  # Application runs here
+
+    logger.warning("Todo API shutting down gracefully...")
+    # Perform cleanup operations here if needed
+    # Close database connections, cancel background tasks, etc.
+
+    # Force cleanup if needed
+    tasks = [t for t in asyncio.all_tasks() if not t.done()]
+    if tasks:
+        logger.warning(f"Cancelling {len(tasks)} remaining tasks...")
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+
 
 # Create FastAPI application instance
 app = FastAPI(
@@ -28,7 +72,8 @@ app = FastAPI(
     description="RESTful API for managing todo items with JWT authentication",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 
@@ -60,19 +105,6 @@ app.include_router(todos.router)
 # Include chat routes (protected)
 app.include_router(chat.router)
 
-@app.on_event("startup")
-async def startup_event():
-    """Application startup event handler"""
-    logger.info("Todo API starting up with JWT authentication...")
-    logger.info("Server running on http://localhost:8000")
-    logger.info("Interactive API docs available at http://localhost:8000/docs")
-    logger.info("API endpoints available at /api")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Application shutdown event handler"""
-    logger.info("Todo API shutting down...")
 
 
 @app.get("/health", tags=["health"], summary="Health check")

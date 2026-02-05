@@ -29,9 +29,7 @@ class AgentService:
         if not self.api_key:
             raise ValueError("OPENROUTER_API_KEY environment variable is required")
 
-        print(
-            f"DEBUG: API key loaded: {'*' * len(self.api_key[-4:]) if self.api_key else 'None'}"
-        )
+        # Removed debug print for performance
 
         # Initialize AsyncOpenAI client with OpenRouter base URL
         self.client = AsyncOpenAI(
@@ -42,7 +40,7 @@ class AgentService:
         # Set the model to use (try gpt-4o-mini first, fallback to gpt-4o-mini)
         self.model_name = settings.agent_model or "openai/gpt-4o-mini"
 
-        print(f"DEBUG: Using model: {self.model_name}")
+        # Removed debug print for performance
 
         # Agent instructions
         self.instructions = (
@@ -72,9 +70,6 @@ class AgentService:
             Dictionary containing the agent's response and any tool calls
         """
         try:
-            print(f"DEBUG: Processing message: {message}")
-            print(f"DEBUG: Conversation history: {conversation_history}")
-
             # Prepare the messages with history and the new message
             full_messages = []
 
@@ -89,8 +84,6 @@ class AgentService:
 
             # Add the new user message
             full_messages.append({"role": "user", "content": message})
-
-            print(f"DEBUG: Full messages sent to API: {full_messages}")
 
             # Prepare the call to OpenAI
             response = await self.client.chat.completions.create(
@@ -251,8 +244,6 @@ class AgentService:
                 tool_choice="auto",  # Allow the model to decide when to use tools
             )
 
-            print(f"DEBUG: Raw API response: {response}")
-
             # Extract the response
             choice = response.choices[0]
             message_content = choice.message
@@ -263,8 +254,6 @@ class AgentService:
             tool_calls = []
             if message_content.tool_calls:
                 for tool_call in message_content.tool_calls:
-                    print(f"DEBUG: Tool call found: {tool_call.function.name}")
-
                     arguments = json.loads(tool_call.function.arguments)
 
                     tool_calls.append(
@@ -274,9 +263,6 @@ class AgentService:
                             "arguments": arguments,
                         }
                     )
-
-            print(f"DEBUG: Initial response text: {response_text}")
-            print(f"DEBUG: Initial tool calls: {tool_calls}")
 
             # If there were tool calls, we may need to generate a final response
             # that incorporates the tool results. If the initial response is empty
@@ -306,12 +292,9 @@ class AgentService:
                     # Multiple tool calls
                     final_response = f"I've processed {len(tool_calls)} tasks for you."
 
-            print(f"DEBUG: Final response text: {final_response}")
-
             return {"response": final_response, "tool_calls": tool_calls}
 
         except Exception as e:
-            print(f"DEBUG: Error in process_message: {str(e)}")
             # Handle any errors gracefully
             return {
                 "response": f"I'm sorry, I encountered an error processing your request: {str(e)}",

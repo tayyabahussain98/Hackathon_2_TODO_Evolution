@@ -22,9 +22,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+asyncpg://user:password@localhost:5432/tododb"
 
     # JWT Authentication Settings
-    jwt_secret_key: str = (
-        "489dc3d2df93f662a60c69849058e635f16a32f764893ca11a6ad7eea1794ee1"
-    )
+    jwt_secret_key: str = os.getenv("JWT_SECRET_KEY", "489dc3d2df93f662a60c69849058e635f16a32f764893ca11a6ad7eea1794ee1")
     jwt_algorithm: str = "HS256"
     jwt_expiration_hours: int = 24
 

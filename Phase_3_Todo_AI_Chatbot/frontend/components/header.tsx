@@ -11,7 +11,7 @@ export default function Header() {
   const { session } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const userName = session?.user?.name || session?.user?.email?.split('@')[0] || session?.user?.email || 'User';
+  const userName = session?.user?.name || session?.user?.email?.split('@')[0] || 'User';
 
   return (
     <header className="fixed top-0 left-0 right-0 h-16 border-b bg-background z-50 flex items-center px-4">

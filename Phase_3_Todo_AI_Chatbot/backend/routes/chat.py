@@ -84,9 +84,6 @@ async def chat_endpoint(
             conversation_history=conversation_history
         )
 
-        print(f"DEBUG: Received message: {request.message}")
-        print(f"DEBUG: Tool calls received: {result.get('tool_calls', [])}")
-
         # Execute tool calls if any
         tool_results = []
         if result.get("tool_calls"):
@@ -98,8 +95,6 @@ async def chat_endpoint(
                 tool_name = tool_call.get("name")
                 arguments = tool_call.get("arguments", {})
                 tool_call_id = tool_call.get("id", "")
-
-                print(f"DEBUG: Tool called: {tool_name} with arguments: {arguments}")
 
                 # Execute the appropriate tool based on the name
                 if tool_name == "add_task":
@@ -113,7 +108,6 @@ async def chat_endpoint(
                         recurrence_type=arguments.get("recurrence_type"),
                         reminder_time=arguments.get("reminder_time")
                     )
-                    print(f"DEBUG: Tool result: {tool_result}")
                     tool_results.append({
                         "tool_call_id": tool_call_id,
                         "result": tool_result
@@ -126,7 +120,6 @@ async def chat_endpoint(
                         user_id=str(current_user.id),
                         status=status
                     )
-                    print(f"DEBUG: Tool result: {tool_result}")
                     tool_results.append({
                         "tool_call_id": tool_call_id,
                         "result": tool_result
@@ -140,7 +133,6 @@ async def chat_endpoint(
                             user_id=str(current_user.id),
                             task_id=int(task_id)
                         )
-                        print(f"DEBUG: Tool result: {tool_result}")
                         tool_results.append({
                             "tool_call_id": tool_call_id,
                             "result": tool_result
@@ -154,7 +146,6 @@ async def chat_endpoint(
                             user_id=str(current_user.id),
                             task_id=int(task_id)
                         )
-                        print(f"DEBUG: Tool result: {tool_result}")
                         tool_results.append({
                             "tool_call_id": tool_call_id,
                             "result": tool_result
@@ -175,7 +166,6 @@ async def chat_endpoint(
                             recurrence_type=arguments.get("recurrence_type"),
                             reminder_time=arguments.get("reminder_time")
                         )
-                        print(f"DEBUG: Tool result: {tool_result}")
                         tool_results.append({
                             "tool_call_id": tool_call_id,
                             "result": tool_result
@@ -244,7 +234,6 @@ async def chat_endpoint(
 
             # Update the result with the generated response
             result["response"] = final_response_text
-            print(f"DEBUG: Generated final reply based on tool results: {final_response_text}")
 
         # Save user message to database
         user_message = Message(

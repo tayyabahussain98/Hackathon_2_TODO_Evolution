@@ -198,7 +198,7 @@ export function TodoForm({ onSubmit, isSubmitting }: TodoFormProps) {
                   className={`h-12 px-4 text-sm font-medium border-transparent hover:bg-secondary/50 transition-colors ${priorityColor}`}
                 >
                   <span className="mr-2 font-medium">{priorityText}</span>
-                  <ChevronDown className="h-4 w-4 opacity-60" />
+                  <ChevronDown className="h-4 w-4 opacity-60 dark:text-white" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-32">
@@ -239,7 +239,7 @@ export function TodoForm({ onSubmit, isSubmitting }: TodoFormProps) {
                     className="ml-1 text-primary/70 hover:text-primary"
                     aria-label={`Remove tag ${tag}`}
                   >
-                    <X className="h-3 w-3" />
+                    <X className="h-3 w-3 dark:text-white" />
                   </button>
                 </span>
               ))}
@@ -340,7 +340,7 @@ export function TodoForm({ onSubmit, isSubmitting }: TodoFormProps) {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin dark:text-white" />
                 Adding...
               </>
             ) : (

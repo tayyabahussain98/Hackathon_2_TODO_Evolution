@@ -81,7 +81,7 @@ export default function LoginPage() {
             <div className="space-y-2 relative">
               <label htmlFor="email" className="text-sm font-medium leading-none">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-white" />
                 <Input
                   id="email"
                   type="email"
@@ -97,7 +97,7 @@ export default function LoginPage() {
             <div className="space-y-2 relative">
               <label htmlFor="password" className="text-sm font-medium leading-none">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-white" />
                 <Input
                   id="password"
                   type="password"

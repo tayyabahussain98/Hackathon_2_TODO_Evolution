@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           setUser({
             id: decoded.sub || 'mock-user-id',
             email: decoded.email || 'mock@example.com',
-            name: decoded.name || decoded.email || 'Mock User'
+            name: decoded.name || decoded.email?.split('@')[0] || 'User'
           });
         }
       } catch (error) {
@@ -79,7 +79,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               setUser({
                 id: decoded.sub || 'mock-user-id',
                 email: decoded.email || 'mock@example.com',
-                name: decoded.name || decoded.email || 'Mock User'
+                name: decoded.name || decoded.email?.split('@')[0] || 'User'
               });
             }
           } catch (error) {
@@ -177,7 +177,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser({
           id: 'mock-user-id',
           email: email,
-          name: email
+          name: email?.split('@')[0] || email
         });
       }
     } catch (error) {
@@ -230,7 +230,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser({
           id: 'mock-user-id',
           email: email,
-          name: email
+          name: email?.split('@')[0] || email
         });
       }
     } catch (error) {

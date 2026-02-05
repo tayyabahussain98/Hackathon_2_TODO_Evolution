@@ -25,7 +25,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Loader2, User, Mail, Lock } from "lucide-react";
 
 export default function SignupPage() {
-  const [username, setUserName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -47,7 +47,7 @@ export default function SignupPage() {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username || !email || !password) return;
+    if (!displayName || !email || !password) return;
 
     if (password !== confirmPassword) {
       toast({
@@ -102,16 +102,16 @@ export default function SignupPage() {
                 htmlFor="name"
                 className="text-sm font-medium leading-none"
               >
-                User Name
+                Display Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-white" />
                 <Input
                   id="name"
                   type="text"
                   placeholder="Enter your user name"
-                  value={username}
-                  onChange={(e) => setUserName(e.target.value)}
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
                   required
                   autoComplete="name"
                   className="pl-10"
@@ -126,7 +126,7 @@ export default function SignupPage() {
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-white" />
                 <Input
                   id="email"
                   type="email"
@@ -147,7 +147,7 @@ export default function SignupPage() {
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-white" />
                 <Input
                   id="password"
                   type="password"
@@ -168,7 +168,7 @@ export default function SignupPage() {
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-white" />
                 <Input
                   id="confirmPassword"
                   type="password"

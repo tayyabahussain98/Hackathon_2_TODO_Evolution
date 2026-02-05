@@ -41,14 +41,14 @@ export const UserProfile = () => {
         <Button variant="ghost" className="flex items-center gap-2">
           <User className="h-5 w-5" />
           <span className="hidden md:inline truncate max-w-[120px]">
-            {session.user.email}
+            {session.user.name || session.user.email?.split('@')[0] || 'User'}
           </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
           <User className="h-4 w-4" />
-          <span className="truncate max-w-[100px]">{session.user.email}</span>
+          <span className="truncate max-w-[100px]">{session.user.name || session.user.email?.split('@')[0] || 'User'}</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
