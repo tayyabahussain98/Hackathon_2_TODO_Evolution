@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { Todo } from '@/types/todo';
-import { fetchTodos, createTodo, updateTodo, deleteTodo } from '@/lib/api';
-import { useToast } from '@/components/ui/use-toast';
-import { TodoForm } from '@/components/todo-form';
-import { TodoList } from '@/components/todo-list';
-import { EmptyState } from '@/components/empty-state';
-import { LoadingSkeleton } from '@/components/loading-skeleton';
-import { UserProfile } from '@/components/user-profile';
-import { reminderService } from '@/services/reminder-service';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { Todo } from "@/types/todo";
+import { fetchTodos, createTodo, updateTodo, deleteTodo } from "@/lib/api";
+import { useToast } from "@/components/ui/use-toast";
+import { TodoForm } from "@/components/todo-form";
+import { TodoList } from "@/components/todo-list";
+import { EmptyState } from "@/components/empty-state";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
+import { UserProfile } from "@/components/user-profile";
+import { reminderService } from "@/services/reminder-service";
 
 interface Particle {
   left: string;
@@ -29,10 +29,14 @@ export default function Home() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortBy, setSortBy] = useState<'priority' | 'due_date' | 'created_at' | 'description' | 'id'>('created_at');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'completed' | 'incomplete' | null>(null);
+  const [sortBy, setSortBy] = useState<
+    "priority" | "due_date" | "created_at" | "description" | "id"
+  >("created_at");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<
+    "completed" | "incomplete" | null
+  >(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { toast } = useToast();
 
@@ -57,9 +61,7 @@ export default function Home() {
           searchQuery || undefined,
           statusFilter || undefined,
           undefined, // priority filter
-          selectedTags.length > 0 ? selectedTags.join(',') : undefined, // tags filter
-          sortBy,
-          sortOrder
+          selectedTags.length > 0 ? selectedTags.join(",") : undefined, // tags filter
         );
         setTodos(data);
 
@@ -67,12 +69,12 @@ export default function Home() {
         reminderService.scheduleReminders(data);
       } catch (error) {
         toast({
-          title: 'Error loading todos',
+          title: "Error loading todos",
           description:
             error instanceof Error
               ? error.message
-              : 'Failed to fetch todos from server',
-          variant: 'destructive',
+              : "Failed to fetch todos from server",
+          variant: "destructive",
         });
       } finally {
         setIsLoading(false);
@@ -81,14 +83,25 @@ export default function Home() {
 
     if (!loading) {
       // Only load todos when not loading auth state and user is authenticated
-      const token = localStorage.getItem('token');
-      const isActuallyAuthenticated = isAuthenticated || (!!token && token !== 'undefined' && token !== 'null');
+      const token = localStorage.getItem("token");
+      const isActuallyAuthenticated =
+        isAuthenticated ||
+        (!!token && token !== "undefined" && token !== "null");
 
       if (isActuallyAuthenticated) {
         loadTodos();
       }
     }
-  }, [loading, isAuthenticated, toast, sortBy, sortOrder, searchQuery, statusFilter, selectedTags]);
+  }, [
+    loading,
+    isAuthenticated,
+    toast,
+    sortBy,
+    sortOrder,
+    searchQuery,
+    statusFilter,
+    selectedTags,
+  ]);
 
   // Check auth status and redirect if not authenticated
   useEffect(() => {
@@ -98,12 +111,13 @@ export default function Home() {
     }
 
     // Check if user is authenticated by looking at both session and token in localStorage
-    const token = localStorage.getItem('token');
-    const isActuallyAuthenticated = isAuthenticated || (!!token && token !== 'undefined' && token !== 'null');
+    const token = localStorage.getItem("token");
+    const isActuallyAuthenticated =
+      isAuthenticated || (!!token && token !== "undefined" && token !== "null");
 
     if (!isActuallyAuthenticated) {
       // User is not authenticated, redirect to login
-      router.push('/login');
+      router.push("/login");
     }
   }, [isAuthenticated, loading, router]);
 
@@ -127,8 +141,9 @@ export default function Home() {
   }
 
   // Check auth status without loading state
-  const token = localStorage.getItem('token');
-  const isActuallyAuthenticated = isAuthenticated || (!!token && token !== 'undefined' && token !== 'null');
+  const token = localStorage.getItem("token");
+  const isActuallyAuthenticated =
+    isAuthenticated || (!!token && token !== "undefined" && token !== "null");
 
   if (!isActuallyAuthenticated) {
     // Don't render main content if not authenticated (redirect will happen via useEffect)
@@ -143,21 +158,35 @@ export default function Home() {
   }
 
   // Handle create todo
-  async function handleCreateTodo(description: string, priority?: 'HIGH' | 'MEDIUM' | 'LOW', tags?: string[], due_date?: string, recurrence_type?: 'NONE' | 'DAILY' | 'WEEKLY' | 'MONTHLY', reminder_time?: number) {
+  async function handleCreateTodo(
+    description: string,
+    priority?: "HIGH" | "MEDIUM" | "LOW",
+    tags?: string[],
+    due_date?: string,
+    recurrence_type?: "NONE" | "DAILY" | "WEEKLY" | "MONTHLY",
+    reminder_time?: number,
+  ) {
     setIsCreating(true);
     try {
-      const newTodo = await createTodo(description, priority, tags, due_date, recurrence_type, reminder_time);
+      const newTodo = await createTodo(
+        description,
+        priority,
+        tags,
+        due_date,
+        recurrence_type,
+        reminder_time,
+      );
       setTodos((prev) => [newTodo, ...prev]); // Prepend new todo
       toast({
-        title: 'Success',
-        description: 'Todo created successfully',
+        title: "Success",
+        description: "Todo created successfully",
       });
     } catch (error) {
       toast({
-        title: 'Failed to create todo',
+        title: "Failed to create todo",
         description:
-          error instanceof Error ? error.message : 'Please try again',
-        variant: 'destructive',
+          error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
       });
       throw error; // Re-throw so form knows it failed
     } finally {
@@ -178,17 +207,19 @@ export default function Home() {
             completed: !currentCompleted,
             updated_at: new Date().toISOString(),
           }
-        : todo
+        : todo,
     );
     setTodos(optimisticTodos);
 
     try {
       // 3. Send mutation to backend
-      const updatedTodo = await updateTodo(id, { completed: !currentCompleted });
+      const updatedTodo = await updateTodo(id, {
+        completed: !currentCompleted,
+      });
 
       // 4. Replace optimistic update with server response
       setTodos((current) =>
-        current.map((todo) => (todo.id === id ? updatedTodo : todo))
+        current.map((todo) => (todo.id === id ? updatedTodo : todo)),
       );
 
       // 5. Update reminder for this todo
@@ -196,8 +227,8 @@ export default function Home() {
 
       // 6. Success feedback
       toast({
-        title: 'Todo updated',
-        description: `Marked as ${updatedTodo.completed ? 'complete' : 'incomplete'}`,
+        title: "Todo updated",
+        description: `Marked as ${updatedTodo.completed ? "complete" : "incomplete"}`,
       });
     } catch (error) {
       // 7. Rollback on error
@@ -205,10 +236,10 @@ export default function Home() {
 
       // 8. Error feedback
       toast({
-        title: 'Update failed',
+        title: "Update failed",
         description:
-          error instanceof Error ? error.message : 'Please try again',
-        variant: 'destructive',
+          error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
       });
     }
   }
@@ -218,29 +249,32 @@ export default function Home() {
     try {
       const updatedTodo = await updateTodo(id, { description: newDescription });
       setTodos((prev) =>
-        prev.map((todo) => (todo.id === id ? updatedTodo : todo))
+        prev.map((todo) => (todo.id === id ? updatedTodo : todo)),
       );
 
       // Update reminder for this todo
       reminderService.updateReminder(updatedTodo);
 
       toast({
-        title: 'Todo updated',
-        description: 'Description updated successfully',
+        title: "Todo updated",
+        description: "Description updated successfully",
       });
     } catch (error) {
       toast({
-        title: 'Update failed',
+        title: "Update failed",
         description:
-          error instanceof Error ? error.message : 'Please try again',
-        variant: 'destructive',
+          error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
       });
       throw error; // Re-throw so component knows it failed
     }
   }
 
   // Handle sort change
-  function handleSortChange(newSortBy: 'priority' | 'due_date' | 'created_at' | 'description' | 'id', newOrder: 'asc' | 'desc') {
+  function handleSortChange(
+    newSortBy: "priority" | "due_date" | "created_at" | "description" | "id",
+    newOrder: "asc" | "desc",
+  ) {
     setSortBy(newSortBy);
     setSortOrder(newOrder);
   }
@@ -251,7 +285,7 @@ export default function Home() {
   }
 
   // Handle status filter change
-  function handleStatusFilterChange(status: 'completed' | 'incomplete' | null) {
+  function handleStatusFilterChange(status: "completed" | "incomplete" | null) {
     setStatusFilter(status);
   }
 
@@ -270,15 +304,15 @@ export default function Home() {
       reminderService.removeReminder(id);
 
       toast({
-        title: 'Todo deleted',
-        description: 'Todo removed successfully',
+        title: "Todo deleted",
+        description: "Todo removed successfully",
       });
     } catch (error) {
       toast({
-        title: 'Delete failed',
+        title: "Delete failed",
         description:
-          error instanceof Error ? error.message : 'Please try again',
-        variant: 'destructive',
+          error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
       });
       throw error; // Re-throw so component knows it failed
     }
@@ -289,7 +323,10 @@ export default function Home() {
       {/* Animated background gradients */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px] animate-pulse"
+          style={{ animationDelay: "1s" }}
+        />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px]" />
       </div>
 
@@ -297,11 +334,7 @@ export default function Home() {
       {isMounted && (
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
           {particles.map((particle, i) => (
-            <div
-              key={i}
-              className="particle"
-              style={particle}
-            />
+            <div key={i} className="particle" style={particle} />
           ))}
         </div>
       )}
@@ -321,9 +354,8 @@ export default function Home() {
                 <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent rounded-full pulse-glow" />
                 <p className="text-sm text-muted-foreground font-medium">
                   {todos.length === 0
-                    ? 'No tasks yet'
-                    : `${todos.filter(t => !t.completed).length} active, ${todos.filter(t => t.completed).length} completed`
-                  }
+                    ? "No tasks yet"
+                    : `${todos.filter((t) => !t.completed).length} active, ${todos.filter((t) => t.completed).length} completed`}
                 </p>
               </div>
             </div>

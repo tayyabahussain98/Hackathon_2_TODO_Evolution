@@ -62,7 +62,7 @@ export default function SignupPage() {
 
     try {
       // Use custom auth system for signup
-      await signUp(email, password);
+      await signUp(email, password, username);
 
       toast({
         title: "Account created!",
@@ -71,9 +71,10 @@ export default function SignupPage() {
 
       // Redirect to home page
       router.push("/");
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as { message?: string };
       const message =
-        err.message || "Failed to create account. Email might be in use.";
+        error.message || "Failed to create account. Email might be in use.";
       toast({
         title: "Signup failed",
         description: message,
