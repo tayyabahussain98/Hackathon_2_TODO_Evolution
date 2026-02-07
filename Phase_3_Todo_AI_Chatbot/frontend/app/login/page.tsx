@@ -55,8 +55,9 @@ export default function LoginPage() {
       setTimeout(() => {
         router.push('/');
       }, 300);
-    } catch (err: any) {
-      const message = err.message || 'Something went wrong. Please check your credentials.';
+    } catch (err: unknown) {
+      const error = err as { message?: string };
+      const message = error.message || 'Something went wrong. Please check your credentials.';
       toast({
         title: 'Login failed',
         description: message,
@@ -124,7 +125,7 @@ export default function LoginPage() {
               ) : 'Login'}
             </Button>
             <div className="text-center text-sm text-gray-500">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/signup" className="text-blue-600 hover:underline font-medium">
                 Sign up
               </Link>

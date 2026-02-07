@@ -29,30 +29,6 @@ export default function ChatbotPage() {
     }
   }, [isLoggedIn, loading, router]);
 
-  // If still loading, show loading state
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-          <p className="text-lg">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If not authenticated, show redirecting message
-  if (!isLoggedIn) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-          <p className="text-lg">Redirecting to login...</p>
-        </div>
-      </div>
-    );
-  }
-
   // Add debug logging for token
   useEffect(() => {
     console.log("Chatbot Page - Token:", token);
@@ -77,6 +53,30 @@ export default function ChatbotPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // If still loading, show loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+          <p className="text-lg">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, show redirecting message
+  if (!isLoggedIn) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+          <p className="text-lg">Redirecting to login...</p>
+        </div>
+      </div>
+    );
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -33,7 +33,7 @@ async function apiRequest<T>(
   };
 
   if (token) {
-    (headers as any)['Authorization'] = `Bearer ${token}`;
+    (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
   }
 
   try {
@@ -112,7 +112,7 @@ export async function fetchTodos(
   status?: 'completed' | 'incomplete',
   priority?: 'HIGH' | 'MEDIUM' | 'LOW',
   tags?: string,
-  sort_by?: 'priority' | 'due_date' | 'created_at' | 'description',
+  sort_by?: 'priority' | 'due_date' | 'created_at' | 'description' | 'id',
   order?: 'asc' | 'desc',
   limit?: number,
   offset?: number

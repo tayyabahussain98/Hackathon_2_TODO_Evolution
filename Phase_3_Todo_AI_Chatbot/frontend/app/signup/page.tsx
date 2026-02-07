@@ -71,9 +71,10 @@ export default function SignupPage() {
 
       // Redirect to dashboard page
       router.push("/");
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { message?: string };
       const message =
-        err.message || "Failed to create account. Email might be in use.";
+        error.message || "Failed to create account. Email might be in use.";
       toast({
         title: "Signup failed",
         description: message,
