@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserProfile } from '@/components/user-profile';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { UserProfile } from "@/components/user-profile";
 
 export default function HomePage() {
   const { session, loading } = useAuth();
@@ -16,7 +16,7 @@ export default function HomePage() {
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       // User is not authenticated, redirect to login
-      router.push('/login');
+      router.push("/login");
     }
   }, [isAuthenticated, loading, router]);
 
@@ -45,19 +45,22 @@ export default function HomePage() {
   }
 
   const handleGoToTasks = () => {
-    router.push('/todos');
+    router.push("/todos");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <Card className="shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold">Welcome to Todo App</CardTitle>
+            <CardTitle className="text-3xl font-bold">
+              Welcome to Todo App
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <p className="text-center text-lg text-muted-foreground">
-              Organize your life with ease – add, track, and complete tasks effortlessly
+              Organize your life with ease – add, track, and complete tasks
+              effortlessly
             </p>
 
             <div className="flex justify-center">
@@ -74,7 +77,8 @@ export default function HomePage() {
               <div className="pt-4 border-t mt-6">
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    Signed in as <span className="font-medium">{session.user.email}</span>
+                    Signed in as{" "}
+                    <span className="font-medium">{session.user.email}</span>
                   </p>
                   <UserProfile />
                 </div>
