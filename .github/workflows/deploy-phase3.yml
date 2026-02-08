@@ -21,7 +21,7 @@ jobs:
           git config --global user.email "bot@github.com"
           git config --global user.name "Bot"
 
-          git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME_PHASE3 hf
+          git clone https://huggingface.co/spaces/tayyaba98/todo_AI_chatbot
 
           cp Phase_3_Todo_AI_Chatbot/backend/main.py hf/
           cp Phase_3_Todo_AI_Chatbot/backend/requirements.txt hf/
