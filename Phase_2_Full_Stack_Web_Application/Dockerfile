@@ -1,13 +1,13 @@
-FROM python:3.12-slim
+FROM python:3.12-alpine
 
 WORKDIR /app
 
 RUN pip install uv
 
-COPY backend/pyproject.toml backend/uv.lock ./
+COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
-COPY backend/ .
+COPY . .
 
 EXPOSE 7860
 
