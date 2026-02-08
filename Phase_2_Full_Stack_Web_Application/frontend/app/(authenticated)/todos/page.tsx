@@ -327,7 +327,7 @@ export default function Home() {
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px] animate-pulse"
           style={{ animationDelay: "1s" }}
         />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-secondary/10 rounded-full blur-[150px]" />
       </div>
 
       {/* Particle effects - only render after mount */}
@@ -343,7 +343,7 @@ export default function Home() {
         {/* Cyberpunk Header with 3D effects */}
         <div className="mb-12 floating">
           <div className="glass-strong neon-border rounded-3xl p-8 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
+            <div className="absolute inset-0 bg-linear-gradient-to-br from-primary/10 via-transparent to-accent/10" />
             <div className="relative z-10">
               <div className="flex justify-between items-center mb-4">
                 <h1 className="text-5xl font-bold gradient-text tracking-tight">
@@ -351,11 +351,11 @@ export default function Home() {
                 </h1>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent rounded-full pulse-glow" />
+                <div className="h-1 w-16 bg-linear-gradient-to-br from-primary to-accent rounded-full pulse-glow" />
                 <p className="text-sm text-muted-foreground font-medium">
-                  {todos.length === 0
-                    ? "No tasks yet"
-                    : `${todos.filter((t) => !t.completed).length} active, ${todos.filter((t) => t.completed).length} completed`}
+                  {todos.length === 0 && "No tasks yet"}
+                  {todos.length > 0 &&
+                    `${todos.filter((t) => !t.completed).length} active, ${todos.filter((t) => t.completed).length} completed`}
                 </p>
               </div>
             </div>

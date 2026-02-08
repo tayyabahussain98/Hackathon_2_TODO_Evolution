@@ -1,14 +1,7 @@
-import path from "path";
+import type { NextConfig } from "next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-  webpack(config) {
-    config.resolve.alias["@"] = path.resolve(__dirname);
-    return config;
-  },
+const nextConfig: NextConfig = {
+  // Empty config for WSL2 - let Next.js handle defaults
 };
 
 export default nextConfig;
