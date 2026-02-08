@@ -1,0 +1,80 @@
+# Runtime dependencies for Todo API Backend
+# Generated from pyproject.toml and uv.lock
+
+# Core web framework
+fastapi==0.128.0
+uvicorn==0.40.0
+
+# Database and ORM
+sqlmodel==0.0.31
+sqlalchemy[asyncio]==2.0.45
+asyncpg==0.31.0
+psycopg2-binary==2.9.11
+
+# Authentication and security
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.5.0
+python-multipart==0.0.21
+
+# Environment variables
+python-dotenv==1.2.1
+
+# Validation and serialization
+pydantic==2.12.5
+pydantic-settings==2.12.0
+email-validator==2.3.0
+pydentic==0.0.1.dev3
+
+# HTTP client
+httpx==0.27.0
+
+# OpenAI agents
+openai-agents==0.6.6
+
+# Database migrations
+alembic==1.17.2
+
+# Standard library dependencies and their requirements
+annotated-types==0.7.0
+anyio==4.12.0
+certifi==2025.11.12
+click==8.3.1
+colorama==0.4.6
+dnspython==2.8.0
+ecdsa==0.19.1
+greenlet==3.3.0
+h11==0.16.0
+httpcore==1.0.9
+idna==3.11
+jiter==0.12.0
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+mako==1.3.10
+markupsafe==3.0.3
+pyasn1==0.6.1
+pycparser==2.23
+pydantic-core==2.41.5
+pyjwt==2.10.1
+python-stdnum==2.1
+referencing==0.37.0
+requests==2.32.5
+rpds-py==0.30.0
+rsa==4.9.1
+six==1.17.0
+sniffio==1.3.1
+sse-starlette==3.1.2
+starlette==0.50.0
+tqdm==4.67.1
+types-requests==2.32.4.20260107
+typing-extensions==4.15.0
+typing-inspection==0.4.2
+urllib3==2.6.3
+
+# Additional dependencies for openai-agents
+cffi==2.0.0
+cryptography==46.0.3
+distro==1.9.0
+griffe==1.15.0
+httpx-sse==0.4.3
+mcp==1.25.0
+openai==2.15.0
