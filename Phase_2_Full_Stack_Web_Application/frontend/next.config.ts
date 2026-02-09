@@ -1,11 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: "export",
-  images: {
-    unoptimized: true,
-  },
-  basePath: "/Hackathon_2_TODO_Evolution",
-  assetPrefix: "/Hackathon_2_TODO_Evolution/",
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // Empty config for WSL2 - let Next.js handle defaults
 };
 
-module.exports = nextConfig;
+export default nextConfig;
