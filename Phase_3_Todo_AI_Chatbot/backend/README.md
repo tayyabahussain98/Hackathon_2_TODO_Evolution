@@ -2,8 +2,8 @@
 title: Todo AI Chatbot
 emoji: "🤖"
 colorFrom: "blue"
-colorTo: "cyan"
-sdk: "python"
+colorTo: "blue"
+sdk: "docker"
 sdk_version: "3.12"
 python_version: "3.12"
 app_file: main.py
