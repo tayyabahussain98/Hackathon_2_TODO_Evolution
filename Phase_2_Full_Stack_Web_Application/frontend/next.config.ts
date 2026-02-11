@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Empty config for WSL2 - let Next.js handle defaults
+  // Ensure proper CSS handling in production
+  output: 'standalone',
+  experimental: {
+    // Ensure CSS is properly bundled
+    optimizePackageImports: ['lucide-react'],
+  },
 };
 
 export default nextConfig;
