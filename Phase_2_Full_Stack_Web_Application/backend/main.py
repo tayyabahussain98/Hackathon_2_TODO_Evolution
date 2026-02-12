@@ -11,6 +11,7 @@ Features:
 """
 
 import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import todos, auth
@@ -22,13 +23,28 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan event handler"""
+    # Startup
+    logger.info("Todo API starting up with JWT authentication...")
+    logger.info("Server running on http://localhost:8000")
+    logger.info("Interactive API docs available at http://localhost:8000/docs")
+    logger.info("API endpoints available at /api")
+    yield
+    # Shutdown
+    logger.info("Todo API shutting down...")
+
+
 # Create FastAPI application instance
 app = FastAPI(
     title="Todo API",
     description="RESTful API for managing todo items with JWT authentication",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 
@@ -57,21 +73,6 @@ app.include_router(auth.router)
 # Include todo routes (protected)
 app.include_router(todos.router)
 
-@app.on_event("startup")
-async def startup_event():
-    """Application startup event handler"""
-    logger.info("Todo API starting up with JWT authentication...")
-    logger.info("Server running on http://localhost:8000")
-    logger.info("Interactive API docs available at http://localhost:8000/docs")
-    logger.info("API endpoints available at /api")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Application shutdown event handler"""
-    logger.info("Todo API shutting down...")
-
-
 @app.get("/health", tags=["health"], summary="Health check")
 async def health_check():
     """
@@ -84,3 +85,15 @@ async def health_check():
     to verify the API server is running and responsive.
     """
     return {"status": "healthy"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        log_level="info"
+    )
