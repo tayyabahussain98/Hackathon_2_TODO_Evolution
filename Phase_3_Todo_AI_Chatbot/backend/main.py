@@ -80,17 +80,7 @@ app = FastAPI(
 # Configure CORS middleware to allow frontend access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # Next.js development server
-        "http://127.0.0.1:3000",  # Alternative localhost format
-        "http://localhost:3001",  # Alternative port for Next.js
-        "http://127.0.0.1:3001",  # Alternative localhost with port 3001
-        "http://localhost:3002",  # Additional port for Next.js
-        "http://127.0.0.1:3002",  # Alternative localhost with port 3002
-        "http://0.0.0.0:3000",   # Docker/WSL compatibility
-        "http://0.0.0.0:3001",   # Docker/WSL compatibility
-        "http://0.0.0.0:3002",   # Docker/WSL compatibility
-    ],
+    allow_origins=["*"],  # Allow all origins for easier deployment
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PATCH, DELETE, etc.)
     allow_headers=["*"],  # Allow all headers
