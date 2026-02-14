@@ -22,6 +22,11 @@ engine = create_async_engine(
     settings.database_url,
     echo=False,  # Set to True for SQL query logging during development
     pool_pre_ping=True,  # Verify connections before using them
+    connect_args={
+        "server_settings": {
+            "jit": "off",
+        }
+    }
 )
 
 
