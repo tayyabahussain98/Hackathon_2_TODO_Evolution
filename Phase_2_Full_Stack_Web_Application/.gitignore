@@ -49,9 +49,6 @@ coverage/
 
 # TypeScript
 *.tsbuildinfo
-*.js
-*.mjs
-*.cjs
 *.map
 
 # IDEs
