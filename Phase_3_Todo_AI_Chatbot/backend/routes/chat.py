@@ -198,27 +198,23 @@ async def chat_endpoint(
 
                             if task_list:
                                 task_summary = ", ".join(task_list)
-                                responses.append(f"Aapke tasks yeh hain: {task_summary}")
+                                responses.append(f"You have {task_count} tasks: {task_summary}")
                             else:
                                 responses.append(f"You have {task_count} tasks in your list.")
                         else:
-                            responses.append("You don't have any tasks in your list.")
+                            responses.append("Your todo list is currently empty.")
 
                     elif tool_name == "complete_task":
                         if tool_result.get("status") == "completed":
                             task_id = tool_result.get("task_id", "unknown")
                             responses.append(f"I've marked task #{task_id} as completed.")
                         elif tool_result.get("status") == "error":
-                            responses.append(f"I encountered an error completing the task: {tool_result.get('error', 'Unknown error')}")
+                            responses.append(f"Error completing the task: {tool_result.get('error', 'Unknown error')}")
 
                     elif tool_name == "delete_task":
                         if tool_result.get("status") == "deleted":
                             task_id = tool_result.get("task_id", "unknown")
-                            # Try to get the task title for the confirmation message
-                            task_title = "unknown task"
-                            if isinstance(tool_result, dict) and 'description' in tool_result:
-                                task_title = tool_result['description']
-                            responses.append(f"Task delete ho gaya: {task_title} (ID: {task_id})")
+                            responses.append(f"Task successfully deleted (ID: {task_id}).")
                         elif tool_result.get("status") == "error":
                             responses.append(f"I encountered an error deleting the task: {tool_result.get('error', 'Unknown error')}")
 
