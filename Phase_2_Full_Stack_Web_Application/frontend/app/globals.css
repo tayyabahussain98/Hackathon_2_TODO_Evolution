@@ -3,10 +3,10 @@
 
 @variant dark (&:where(.dark *));
 
-@source "../../components/**/*.tsx";
-@source "../../app/**/*.tsx";
-@source "../../hooks/**/*.tsx";
-@source "../../services/**/*.tsx";
+@source "../components/**/*.tsx";
+@source "../app/**/*.tsx";
+@source "../hooks/**/*.tsx";
+@source "../services/**/*.tsx";
 
 @theme inline {
   --color-background: var(--background);
