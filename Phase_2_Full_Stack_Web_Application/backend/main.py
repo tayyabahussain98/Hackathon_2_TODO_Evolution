@@ -61,6 +61,7 @@ app.add_middleware(
         "http://0.0.0.0:3000",   # Docker/WSL compatibility
         "http://0.0.0.0:3001",   # Docker/WSL compatibility
         "http://0.0.0.0:3002",   # Docker/WSL compatibility
+        "https://phase2-todo-app-v2.vercel.app", # Vercel production deployment
     ],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PATCH, DELETE, etc.)
