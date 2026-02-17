@@ -37,8 +37,8 @@ class AgentService:
             base_url="https://openrouter.ai/api/v1",
         )
 
-        # Set the model to use (try gpt-4o-mini first, fallback to gpt-4o-mini)
-        self.model_name = settings.agent_model or "openai/gpt-4o-mini"
+        # Set the model to use from settings
+        self.model_name = settings.agent_model or "openrouter/auto"
 
         # Removed debug print for performance
 
@@ -87,7 +87,7 @@ class AgentService:
                 model=self.model_name,
                 messages=full_messages,
                 temperature=0.7,
-                max_tokens=1000,
+                max_tokens=500,
                 tools=[
                     {
                         "type": "function",
